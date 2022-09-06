@@ -1,32 +1,33 @@
 package book.fain.yakov;
 
-import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 
 import javax.swing.JButton;
+import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.JScrollBar;
 import javax.swing.JTextField;
 
 public class ViewFileCopy extends JFrame implements ActionListener{
 	
 	JPanel windowContent;
-	JTextField copyFrom = new JTextField();
-	JTextField copyTo = new JTextField();
+	JTextField copyFrom = new JTextField("C:\\Users\\nickm\\example_name.txt");
+	JTextField copyTo = new JTextField("C:\\Users\\nickm\\NEW_example_name.txt");
 	JButton enterToCopy = new JButton("Copy");
 	JLabel copyFromLabel = new JLabel("Copy from: ");
 	JLabel copyToLabel = new JLabel("Copy to: ");
-	JLabel browseLabel = new JLabel("Browse");
-	JLabel browseLabel2 = new JLabel("Browse");
+	JButton browseButton = new JButton("Browse");
+	JButton browseButton2 = new JButton("Browse");
 	
 	public ViewFileCopy() {
 		
@@ -38,24 +39,60 @@ public class ViewFileCopy extends JFrame implements ActionListener{
 		enterToCopy.setFont(font);
 		copyFromLabel.setFont(font);
 		copyToLabel.setFont(font);
-		browseLabel.setFont(font);
-		browseLabel2.setFont(font);
+		browseButton.setFont(font);
+		browseButton2.setFont(font);
 		
 		windowContent = new JPanel();
 		windowContent.setLayout(new GridLayout(3, 3));
 		
 		
+		browseButton.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				JFileChooser fileOpen = new JFileChooser();
+				fileOpen.showDialog(null, "Select");
+				File file = fileOpen.getSelectedFile();
+				copyFrom.setText(file.getAbsolutePath());
+			}
+		});
+		
+		browseButton2.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				JFileChooser fileOpen = new JFileChooser();
+				fileOpen.showDialog(null, "Copy to");
+				File file = fileOpen.getSelectedFile();
+				copyTo.setText(file.getAbsolutePath());
+				
+			}
+		});
+		
 		windowContent.add(copyFromLabel);
 		windowContent.add(copyFrom);
-		windowContent.add(browseLabel);
+		windowContent.add(browseButton);
 		windowContent.add(copyToLabel);
 		windowContent.add(copyTo);
-		windowContent.add(browseLabel2);
+		windowContent.add(browseButton2);
 		windowContent.add(new JLabel(""));
 		
 		
+		copyFrom.addMouseListener(new MouseAdapter() {
+			
+			public void mouseClicked (MouseEvent e) {
+				copyFrom.setText(" ");
+			}
+		});
 		
 		
+		copyTo.addMouseListener(new MouseAdapter() {
+			
+			public void mouseClicked (MouseEvent e) {
+				copyTo.setText(" ");
+			}
+		
+		});
 		
 		enterToCopy.addActionListener(this);
 		windowContent.add(enterToCopy);
